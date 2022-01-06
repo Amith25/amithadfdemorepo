@@ -1,0 +1,20 @@
+{
+	"name": "GIT_demo_dataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "GIT_demo_linked_serv",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"folderPath": "practice",
+				"container": "amithdemocontainer"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": []
+	}
+}
