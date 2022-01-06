@@ -28,7 +28,7 @@
 					"name": "DerivedColumn1"
 				}
 			],
-			"script": "source(output(\n\t\tuserId as integer,\n\t\tid as string,\n\t\ttitle as string,\n\t\tcompleted as boolean\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'arrayOfDocuments') ~> JsonSrc\nDerivedColumn1 call(mapColumn(\n\t\t{} = userId\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\toutput(\n\t\theaders as [string,string],\n\t\tbody as (completed as string, id as string, title as string, userId as string)\n\t),\n\tallowSchemaDrift: true,\n\tstore: 'restservice',\n\tformat: 'rest',\n\ttimeout: 30,\n\thttpMethod: 'GET',\n\trequestFormat: ['type' -> 'json'],\n\tresponseFormat: ['type' -> 'json', 'documentForm' -> 'singleDocument']) ~> ExternalCall1\nJsonSrc derive(lkp = \"/title\") ~> DerivedColumn1"
+			"script": "source(output(\n\t\tuserId as integer,\n\t\tid as string,\n\t\ttitle as string,\n\t\tcompleted as boolean\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'arrayOfDocuments') ~> JsonSrc\nDerivedColumn1 call(mapColumn(\n\t\tlkp\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\toutput(\n\t\theaders as [string,string],\n\t\tbody as (completed as string, id as string, title as string, userId as string)\n\t),\n\tallowSchemaDrift: true,\n\tstore: 'restservice',\n\tformat: 'rest',\n\ttimeout: 30,\n\thttpMethod: 'GET',\n\trequestFormat: ['type' -> 'json'],\n\tresponseFormat: ['type' -> 'json', 'documentForm' -> 'singleDocument']) ~> ExternalCall1\nJsonSrc derive(lkp = \"/title\") ~> DerivedColumn1"
 		}
 	}
 }
