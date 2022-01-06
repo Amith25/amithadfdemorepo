@@ -1,0 +1,39 @@
+{
+	"name": "json_dataset_as3",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "linkedservice_amithdemo",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "assign_3_dataset"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "Sample_id_json.json",
+				"folderPath": "assign_3",
+				"container": "assignments"
+			}
+		},
+		"schema": {
+			"type": "object",
+			"properties": {
+				"userId": {
+					"type": "integer"
+				},
+				"id": {
+					"type": "null"
+				},
+				"title": {
+					"type": "string"
+				},
+				"completed": {
+					"type": "boolean"
+				}
+			}
+		}
+	}
+}
