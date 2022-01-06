@@ -1,0 +1,145 @@
+{
+	"name": "demo",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copydemo",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Validation1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobStorageWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Rno",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Rno",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Rtype",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Rtype",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Rprice",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Rprice",
+									"type": "String",
+									"physicalType": "String"
+								}
+							},
+							{
+								"source": {
+									"name": "Rfloor",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Rfloor",
+									"type": "String",
+									"physicalType": "String"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "CDdemoinput",
+						"type": "DatasetReference",
+						"parameters": {
+							"input_file_name": "room details.csv"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "CDdemooutput",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Validation1",
+				"type": "Validation",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "CDdemoinput",
+						"type": "DatasetReference",
+						"parameters": {
+							"input_file_name": "room details.csv"
+						}
+					},
+					"timeout": "7.00:00:00",
+					"sleep": 10
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2021-12-24T04:44:20Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

@@ -1,0 +1,25 @@
+{
+	"name": "CDdemooutput",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "linkedservice_amithdemo",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "room_det_out.csv",
+				"folderPath": "output",
+				"container": "amithdemocontainer"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

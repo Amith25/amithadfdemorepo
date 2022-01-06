@@ -1,0 +1,55 @@
+{
+	"name": "incremental",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "test",
+						"type": "DatasetReference"
+					},
+					"name": "SrcCSV"
+				},
+				{
+					"dataset": {
+						"referenceName": "amith_db",
+						"type": "DatasetReference"
+					},
+					"name": "SrcTable"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "amith_db",
+						"type": "DatasetReference"
+					},
+					"name": "sinkInsert"
+				},
+				{
+					"dataset": {
+						"referenceName": "amith_db",
+						"type": "DatasetReference"
+					},
+					"name": "sinkUpdate"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DerivedColumn1"
+				},
+				{
+					"name": "Lookup1"
+				},
+				{
+					"name": "ConditionalSplit1"
+				},
+				{
+					"name": "Select1"
+				}
+			],
+			"script": "source(output(\n\t\tid as string,\n\t\tname as string,\n\t\tclass as string,\n\t\tage as string,\n\t\tmarks as string,\n\t\tcity as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false) ~> SrcCSV\nsource(output(\n\t\tid as integer,\n\t\tname as string,\n\t\tclass as string,\n\t\tage as integer,\n\t\tmarks as integer,\n\t\tcity as string,\n\t\tlastmodifieddate as timestamp,\n\t\thashval as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> SrcTable\nSrcCSV derive(hashval = md5(id,name,class,marks,city),\n\t\tlastmodifieddate = currentDate(),\n\t\tid = toInteger(id)) ~> DerivedColumn1\nDerivedColumn1, Select1 lookup(id == tb_id,\n\tmultiple: false,\n\tpickup: 'any',\n\tbroadcast: 'auto')~> Lookup1\nLookup1 split(isNull(tb_id),\n\t!isNull(tb_id) && notEquals(hashval,tb_hashval),\n\tdisjoint: true) ~> ConditionalSplit1@(insert, update, notchanged)\nSrcTable select(mapColumn(\n\t\ttb_id = id,\n\t\ttb_name = name,\n\t\ttb_class = class,\n\t\ttb_age = age,\n\t\ttb_marks = marks,\n\t\ttb_city = city,\n\t\ttb_lastmodifieddate = lastmodifieddate,\n\t\ttb_hashval = hashval\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nConditionalSplit1@insert sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\tid,\n\t\tname,\n\t\tclass,\n\t\tage,\n\t\tmarks,\n\t\tcity,\n\t\thashval,\n\t\tlastmodifieddate\n\t)) ~> sinkInsert\nConditionalSplit1@update sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\tid,\n\t\tname,\n\t\tclass,\n\t\tage,\n\t\tmarks,\n\t\tcity,\n\t\thashval,\n\t\tlastmodifieddate\n\t)) ~> sinkUpdate"
+		}
+	}
+}

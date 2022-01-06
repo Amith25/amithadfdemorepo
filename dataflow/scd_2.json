@@ -1,0 +1,64 @@
+{
+	"name": "scd_2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "assign2_dataset",
+						"type": "DatasetReference"
+					},
+					"name": "SrcCsv"
+				},
+				{
+					"dataset": {
+						"referenceName": "amith_db",
+						"type": "DatasetReference"
+					},
+					"name": "Srcscd2"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "amith_db",
+						"type": "DatasetReference"
+					},
+					"name": "scd2Insert"
+				},
+				{
+					"dataset": {
+						"referenceName": "amith_db",
+						"type": "DatasetReference"
+					},
+					"name": "scd2Update"
+				}
+			],
+			"transformations": [
+				{
+					"name": "DerivedColumn1"
+				},
+				{
+					"name": "Slcsqltb"
+				},
+				{
+					"name": "Lookup1"
+				},
+				{
+					"name": "Filter1"
+				},
+				{
+					"name": "Select1"
+				},
+				{
+					"name": "DerivedColumn2"
+				},
+				{
+					"name": "AlterRow1"
+				}
+			],
+			"script": "source(output(\n\t\temp_id as string,\n\t\t{ emp_name} as string,\n\t\t{ date_of_birth} as string,\n\t\t{ salary} as string,\n\t\t{ address} as string,\n\t\t{ grade} as string\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tinferDriftedColumnTypes: true,\n\tignoreNoFilesFound: false) ~> SrcCsv\nsource(output(\n\t\temp_sk as integer,\n\t\temp_id as string,\n\t\temp_name as string,\n\t\tdate_of_birth as string,\n\t\tsalary as string,\n\t\taddress as string,\n\t\tgrade as string,\n\t\tisactive as integer\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tisolationLevel: 'READ_UNCOMMITTED',\n\tformat: 'table') ~> Srcscd2\nSrcCsv derive(isactive = 1) ~> DerivedColumn1\nSrcscd2 select(mapColumn(\n\t\tsql_emp_sk = emp_sk,\n\t\tsql_emp_id = emp_id,\n\t\tsql_emp_name = emp_name,\n\t\tsql_date_of_birth = date_of_birth,\n\t\tsql_salary = salary,\n\t\tsql_address = address,\n\t\tsql_grade = grade,\n\t\tsql_isactive = isactive\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Slcsqltb\nSrcCsv, Slcsqltb lookup(emp_id == sql_emp_id,\n\tmultiple: false,\n\tpickup: 'any',\n\tbroadcast: 'auto')~> Lookup1\nLookup1 filter(!isNull(emp_id)) ~> Filter1\nFilter1 select(mapColumn(\n\t\tsql_emp_sk,\n\t\tsql_emp_id,\n\t\tsql_emp_name,\n\t\tsql_date_of_birth,\n\t\tsql_salary,\n\t\tsql_address,\n\t\tsql_grade,\n\t\tsql_isactive\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true) ~> Select1\nSelect1 derive(sql_isactive = 0) ~> DerivedColumn2\nDerivedColumn2 alterRow(updateIf(1==1)) ~> AlterRow1\nDerivedColumn1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\temp_id,\n\t\temp_name = { emp_name},\n\t\tdate_of_birth = { date_of_birth},\n\t\tsalary = { salary},\n\t\taddress = { address},\n\t\tgrade = { grade},\n\t\tisactive\n\t)) ~> scd2Insert\nAlterRow1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:false,\n\tupdateable:true,\n\tupsertable:false,\n\tkeys:['emp_sk'],\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\temp_sk = sql_emp_sk,\n\t\temp_id = sql_emp_id,\n\t\temp_name = sql_emp_name,\n\t\tdate_of_birth = sql_date_of_birth,\n\t\tsalary = sql_salary,\n\t\taddress = sql_address,\n\t\tgrade = sql_grade,\n\t\tisactive = sql_isactive\n\t)) ~> scd2Update"
+		}
+	}
+}

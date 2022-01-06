@@ -1,0 +1,58 @@
+{
+	"name": "assign2_dataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "linkedservice_amithdemo",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"filename": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": {
+					"value": "@dataset().filename",
+					"type": "Expression"
+				},
+				"folderPath": "assign_2",
+				"container": "assignments"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "emp_id",
+				"type": "String"
+			},
+			{
+				"name": " emp_name",
+				"type": "String"
+			},
+			{
+				"name": " date_of_birth",
+				"type": "String"
+			},
+			{
+				"name": " salary",
+				"type": "String"
+			},
+			{
+				"name": " address",
+				"type": "String"
+			},
+			{
+				"name": " grade",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

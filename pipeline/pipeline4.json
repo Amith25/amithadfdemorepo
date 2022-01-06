@@ -1,0 +1,128 @@
+{
+	"name": "pipeline4",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_json_auto",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": true
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "SqlServerSink"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['id']"
+								},
+								"sink": {
+									"name": "id",
+									"type": "Int16"
+								}
+							},
+							{
+								"source": {
+									"path": "$['type']"
+								},
+								"sink": {
+									"name": "type"
+								}
+							},
+							{
+								"source": {
+									"path": "$['name']"
+								},
+								"sink": {
+									"name": "name"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ppu']"
+								},
+								"sink": {
+									"name": "ppu"
+								}
+							},
+							{
+								"source": {
+									"path": "$['batters']['batter'][0]['id']"
+								},
+								"sink": {
+									"name": "batters_batter'][0]['id"
+								}
+							},
+							{
+								"source": {
+									"path": "$['batters']['batter'][0]['type']"
+								},
+								"sink": {
+									"name": "batters_batter'][0]['type"
+								}
+							},
+							{
+								"source": {
+									"path": "$['topping'][0]['id']"
+								},
+								"sink": {
+									"name": "topping'][0]['id"
+								}
+							},
+							{
+								"source": {
+									"path": "$['topping'][0]['type']"
+								},
+								"sink": {
+									"name": "topping'][0]['type"
+								}
+							}
+						]
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Jsonfile",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "amith_db",
+						"type": "DatasetReference",
+						"parameters": {
+							"tb_name": "assign1_json_auto"
+						}
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "aissignment 1"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-12-23T17:25:59Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

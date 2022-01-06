@@ -1,0 +1,411 @@
+{
+	"name": "assign_1",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_csv",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "SqlServerSink"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "card_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "card_id",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "member_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "member_id",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "amount",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "amount",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "postcode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "postcode",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "pos_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "pos_id",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "transaction_dt",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "trans_date",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							},
+							{
+								"source": {
+									"name": "status",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "status",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "cvsfile",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "amith_db",
+						"type": "DatasetReference",
+						"parameters": {
+							"tb_name": "assign1_csv"
+						}
+					}
+				]
+			},
+			{
+				"name": "Copy_excel",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "ExcelSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						}
+					},
+					"sink": {
+						"type": "SqlServerSink"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "card_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "card_id",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "member_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "member_id",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "amount",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "amount",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "postcode",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "postcode",
+									"type": "Int32",
+									"physicalType": "int"
+								}
+							},
+							{
+								"source": {
+									"name": "pos_id",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "pos_id",
+									"type": "Int64",
+									"physicalType": "bigint"
+								}
+							},
+							{
+								"source": {
+									"name": "transaction_dt",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "trans_date",
+									"type": "DateTime",
+									"physicalType": "datetime"
+								}
+							},
+							{
+								"source": {
+									"name": "status",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "status",
+									"type": "String",
+									"physicalType": "nvarchar"
+								}
+							}
+						],
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "excelfile",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "amith_db",
+						"type": "DatasetReference",
+						"parameters": {
+							"tb_name": "assign1_excel"
+						}
+					}
+				]
+			},
+			{
+				"name": "Copy_json",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "JsonSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "JsonReadSettings"
+						}
+					},
+					"sink": {
+						"type": "SqlServerSink"
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"path": "$['id']"
+								},
+								"sink": {
+									"name": "id",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['type']"
+								},
+								"sink": {
+									"name": "type",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['name']"
+								},
+								"sink": {
+									"name": "name",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['ppu']"
+								},
+								"sink": {
+									"name": "ppu",
+									"type": "Decimal"
+								}
+							},
+							{
+								"source": {
+									"path": "$['batters']['batter'][0]['id']"
+								},
+								"sink": {
+									"name": "batter_id",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['batters']['batter'][0]['type']"
+								},
+								"sink": {
+									"name": "batter_type",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "$['topping'][0]['id']"
+								},
+								"sink": {
+									"name": "topping_id",
+									"type": "Int32"
+								}
+							},
+							{
+								"source": {
+									"path": "$['topping'][0]['type']"
+								},
+								"sink": {
+									"name": "topping_name",
+									"type": "String"
+								}
+							}
+						],
+						"collectionReference": ""
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Jsonfile",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "amith_db",
+						"type": "DatasetReference",
+						"parameters": {
+							"tb_name": "assign1_json"
+						}
+					}
+				]
+			}
+		],
+		"folder": {
+			"name": "aissignment 1"
+		},
+		"annotations": [],
+		"lastPublishTime": "2021-12-23T17:25:59Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
