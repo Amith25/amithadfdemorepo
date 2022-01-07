@@ -88,12 +88,33 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET",
+									"paginationRules": {
+										"supportRFC5988": "true"
+									}
+								},
 								"sink": {
 									"type": "SqlServerSink",
 									"tableOption": "autoCreate"
 								},
 								"enableStaging": false
 							},
+							"inputs": [
+								{
+									"referenceName": "RestApi",
+									"type": "DatasetReference",
+									"parameters": {
+										"title_miss": {
+											"value": "@item().title",
+											"type": "Expression"
+										}
+									}
+								}
+							],
 							"outputs": [
 								{
 									"referenceName": "amith_db",
