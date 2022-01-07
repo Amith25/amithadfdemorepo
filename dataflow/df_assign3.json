@@ -21,13 +21,10 @@
 					"name": "ExternalCall1"
 				},
 				{
-					"name": "DerivedColumn1"
-				},
-				{
 					"name": "DerivedColumn2"
 				}
 			],
-			"script": "parameters{\n\tparameter1 as string (title)\n}\nsource(output(\n\t\tuserId as integer,\n\t\tid as string,\n\t\ttitle as string,\n\t\tcompleted as boolean\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'arrayOfDocuments') ~> JsonSrc\nDerivedColumn2 call(mapColumn(\n\t\ttitle,\n\t\tlkp\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\toutput(\n\t\theaders as [string,string],\n\t\tbody as (completed as string, id as string, title as string, userId as string)\n\t),\n\tallowSchemaDrift: true) ~> ExternalCall1\nExternalCall1 derive(new_id = ERROR_FUNCTION('')) ~> DerivedColumn1\nJsonSrc derive(lkp = \"/title\") ~> DerivedColumn2"
+			"script": "parameters{\n\tparameter1 as string (title)\n}\nsource(output(\n\t\tuserId as integer,\n\t\tid as string,\n\t\ttitle as string,\n\t\tcompleted as boolean\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'arrayOfDocuments') ~> JsonSrc\nDerivedColumn2 call(mapColumn(\n\t\ttitle,\n\t\tlkp\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\toutput(\n\t\theaders as [string,string],\n\t\tbody as (completed as string, id as string, title as string, userId as string)\n\t),\n\tallowSchemaDrift: true) ~> ExternalCall1\nJsonSrc derive(lkp = \"/title\") ~> DerivedColumn2"
 		}
 	}
 }
