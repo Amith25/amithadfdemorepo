@@ -18,17 +18,16 @@
 			"sinks": [],
 			"transformations": [
 				{
-					"name": "ExternalCall1",
-					"linkedService": {
-						"referenceName": "RestService1",
-						"type": "LinkedServiceReference"
-					}
+					"name": "ExternalCall1"
 				},
 				{
 					"name": "DerivedColumn1"
+				},
+				{
+					"name": "DerivedColumn2"
 				}
 			],
-			"script": "parameters{\n\tparameter1 as string (title)\n}\nsource(output(\n\t\tuserId as integer,\n\t\tid as string,\n\t\ttitle as string,\n\t\tcompleted as boolean\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'arrayOfDocuments') ~> JsonSrc\nJsonSrc call(mapColumn(\n\t\teach(match(/* All input columns */ true()),\n\t\t\t/* Input name */ $$ = $$)\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\toutput(\n\t\theaders as [string,string],\n\t\tbody as (completed as boolean, id as short, title as string, userId as short)\n\t),\n\tallowSchemaDrift: true,\n\tstore: 'restservice',\n\tformat: 'rest',\n\ttimeout: 30,\n\thttpMethod: 'GET',\n\tentity: 'https://jsonplaceholder.typicode.com/todos?title=\\'',\n\trequestFormat: ['type' -> 'json'],\n\tresponseFormat: ['type' -> 'json', 'documentForm' -> 'singleDocument']) ~> ExternalCall1\nExternalCall1 derive(new_id = ERROR_FUNCTION('')) ~> DerivedColumn1"
+			"script": "parameters{\n\tparameter1 as string (title)\n}\nsource(output(\n\t\tuserId as integer,\n\t\tid as string,\n\t\ttitle as string,\n\t\tcompleted as boolean\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'arrayOfDocuments') ~> JsonSrc\nDerivedColumn2 call(mapColumn(\n\t\ttitle,\n\t\tlkp\n\t),\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\toutput(\n\t\theaders as [string,string],\n\t\tbody as (completed as string, id as string, title as string, userId as string)\n\t),\n\tallowSchemaDrift: true) ~> ExternalCall1\nExternalCall1 derive(new_id = ERROR_FUNCTION('')) ~> DerivedColumn1\nJsonSrc derive(lkp = \"/title\") ~> DerivedColumn2"
 		}
 	}
 }
