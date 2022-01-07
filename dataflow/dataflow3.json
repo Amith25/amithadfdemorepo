@@ -18,15 +18,15 @@
 						"referenceName": "amith_db",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "SnkAssign3tb"
 				}
 			],
 			"transformations": [
 				{
-					"name": "Filter1"
+					"name": "FlIdpresentRecords"
 				}
 			],
-			"script": "source(output(\n\t\tuserId as integer,\n\t\tid as string,\n\t\ttitle as string,\n\t\tcompleted as boolean\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'arrayOfDocuments') ~> SrcJsonAs3\nSrcJsonAs3 filter(id!='') ~> Filter1\nFilter1 sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\tuserId,\n\t\tid,\n\t\ttitle,\n\t\tcompleted\n\t)) ~> sink1"
+			"script": "source(output(\n\t\tuserId as integer,\n\t\tid as string,\n\t\ttitle as string,\n\t\tcompleted as boolean\n\t),\n\tallowSchemaDrift: true,\n\tvalidateSchema: false,\n\tignoreNoFilesFound: false,\n\tdocumentForm: 'arrayOfDocuments') ~> SrcJsonAs3\nSrcJsonAs3 filter(id!='') ~> FlIdpresentRecords\nFlIdpresentRecords sink(allowSchemaDrift: true,\n\tvalidateSchema: false,\n\tdeletable:false,\n\tinsertable:true,\n\tupdateable:false,\n\tupsertable:false,\n\tformat: 'table',\n\tskipDuplicateMapInputs: true,\n\tskipDuplicateMapOutputs: true,\n\tmapColumn(\n\t\tuserId,\n\t\tid,\n\t\ttitle,\n\t\tcompleted\n\t)) ~> SnkAssign3tb"
 		}
 	}
 }
