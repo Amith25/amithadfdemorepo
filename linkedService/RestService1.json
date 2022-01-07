@@ -1,11 +1,6 @@
 {
 	"name": "RestService1",
 	"properties": {
-		"parameters": {
-			"param_title": {
-				"type": "string"
-			}
-		},
 		"annotations": [],
 		"type": "RestService",
 		"typeProperties": {
