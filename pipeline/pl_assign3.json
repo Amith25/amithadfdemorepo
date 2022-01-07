@@ -47,7 +47,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Lookup1').output.value",
+						"value": "@activity('LkpJsonFile').output.value",
 						"type": "Expression"
 					},
 					"condition": {
@@ -70,7 +70,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Filter1').output.value",
+						"value": "@activity('FlMissIdRecords').output.value",
 						"type": "Expression"
 					},
 					"isSequential": true,
