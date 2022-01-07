@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Lookup1",
+				"name": "LkpJsonFile",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -34,11 +34,11 @@
 				}
 			},
 			{
-				"name": "Filter1",
+				"name": "FlMissIdRecords",
 				"type": "Filter",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "LkpJsonFile",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -57,11 +57,11 @@
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "ForEachMissId",
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Filter1",
+						"activity": "FlMissIdRecords",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -129,11 +129,11 @@
 				}
 			},
 			{
-				"name": "Data flow1",
+				"name": "df_ID_present",
 				"type": "ExecuteDataFlow",
 				"dependsOn": [
 					{
-						"activity": "ForEach1",
+						"activity": "ForEachMissId",
 						"dependencyConditions": [
 							"Succeeded"
 						]
