@@ -2,14 +2,14 @@
 	"name": "RestService1",
 	"properties": {
 		"parameters": {
-			"param": {
+			"param_title": {
 				"type": "string"
 			}
 		},
 		"annotations": [],
 		"type": "RestService",
 		"typeProperties": {
-			"url": "https://jsonplaceholder.typicode.com/todos",
+			"url": "https://jsonplaceholder.typicode.com/todos?",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
 		}
