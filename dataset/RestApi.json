@@ -1,0 +1,26 @@
+{
+	"name": "RestApi",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RestService1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"title_miss": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "assign_3_dataset"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@concat('?title=',dataset().title_miss)",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	}
+}
